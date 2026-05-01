@@ -1,2 +1,65 @@
-# crossborder-agent-system
-真实业务痛点 + 多 Agent 协作 + 高频使用 + 可量化结果 + 未来扩展空间
+适合跨境电商卖家用来自动化处理：WB 俄罗斯站、SHEIN 法国站、Shopify 美国站的商品上架资料。
+
+## 功能
+- 市场分析 Agent：分析目标平台用户关注点
+- 标题 Agent：生成平台标题和搜索词
+- 本地化 Agent：生成俄语、法语、英语商品描述
+- 合规 Agent：检查抗菌、杀菌、治疗、医疗级等高风险词
+- 视觉 Agent：生成主图/详情图提示词，支持 WB 3:4、900×1200
+- 客服 Agent：生成评论回复、差评回复、FAQ
+- 数据复盘 Agent：生成 CTR、转化率、退货率的 A/B 测试计划
+
+## 快速启动
+
+```bash
+cd crossborder-agent-system
+python -m venv .venv
+source .venv/bin/activate  # Windows 用 .venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+cp .env.example .env
+uvicorn backend.app.main:app --reload --host 0.0.0.0 --port 8000
+```
+
+打开 API 文档：
+
+```text
+http://localhost:8000/docs
+```
+
+启动前端：
+
+```bash
+streamlit run frontend/streamlit_app.py
+```
+
+打开：
+
+```text
+http://localhost:8501
+```
+
+## Mock 模式
+默认 `MOCK_MODE=true`，不需要 API Key 就能跑通完整流程。
+
+## 真实模型模式
+把 `.env` 改成：
+
+```env
+MOCK_MODE=false
+OPENAI_API_KEY=你的key
+OPENAI_MODEL=gpt-4.1-mini
+```
+
+## API 测试
+
+```bash
+curl -X POST http://localhost:8000/api/run \
+  -H "Content-Type: application/json" \
+  -d @examples/sample_product.json
+```
+
+## Docker 启动
+
+```bash
+cp .env.example .env
+docker compose up --build
